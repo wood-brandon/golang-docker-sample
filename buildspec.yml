@@ -1,8 +1,18 @@
 version: 0.2
-
+batch:
+  build-matrix:
+    static:
+      ignore-failure: false
+    dynamic:
+      env:
+        variables:
+          TEST_VAR:
+            - HELLO-BUILD-1
+            - HELLO-BUILD-2
 phases:
   pre_build:
     commands:
+      - echo RUNNING BUILD $TEST_VAR
       - echo Logging in to Amazon ECR...
       - aws --version
       - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin 975050175481.dkr.ecr.us-east-1.amazonaws.com
