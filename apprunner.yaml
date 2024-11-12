@@ -6,3 +6,6 @@ build:
       - go build main.go
 run:
   command: ./main
+  env:
+    - name: TEST_URL
+      value: your-apprunner-url-here

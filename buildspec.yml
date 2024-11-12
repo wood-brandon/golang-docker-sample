@@ -4,9 +4,11 @@ phases:
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
+      - echo "Account Id = $(echo $CODEBUILD_BUILD_ARN | cut -f5 -d ':')"
+      - export ACCOUNT_ID=$(echo $CODEBUILD_BUILD_ARN | cut -f5 -d ':')
       - aws --version
-      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin 975050175481.dkr.ecr.us-east-1.amazonaws.com
-      - REPOSITORY_URI=975050175481.dkr.ecr.us-east-1.amazonaws.com/demo-dockerfile
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com
+      - REPOSITORY_URI=$ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/demo-dockerfile
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - IMAGE_TAG=${COMMIT_HASH:=latest}
   build:
